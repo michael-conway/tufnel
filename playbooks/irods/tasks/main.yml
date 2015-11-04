@@ -1,0 +1,91 @@
+---
+
+- name: Create PostgrSQL Database
+  sudo: yes
+  sudo_user: postgres
+  postgresql_db: name={{icat_db}}
+
+- name: grant access to user
+  sudo: yes
+  sudo_user: postgres
+  postgresql_user: db={{icat_db}} name={{icat_irods_user}} password={{irods_icat_password}} priv=ALL
+
+- name: ensure user does not have unnecessary privilege
+  sudo: yes
+  sudo_user: postgres
+  postgresql_user: name={{icat_irods_user}} role_attr_flags=NOSUPERUSER,NOCREATEDB
+
+- name: download iCAT
+  get_url: url={{ irods_icat }} dest=/home/{{ ansible_ssh_user }}/
+
+- name: download iRODS postgreSQL plugin
+  get_url: url={{ irods_postgres }} dest=/home/{{ ansible_ssh_user }}/
+
+- name: install iRODS dependencies
+  apt:
+      name: "{{item}}"
+      state: latest
+  with_items:
+      - python-jsonschema
+      - python-pip
+
+- name: Install iCAT  Plugins
+  shell: 
+     dpkg -i /home/{{ ansible_ssh_user }}/{{ icat_pkg }};
+     apt-get -y -f install
+
+- name: Install  Database Plugins
+  shell:
+     dpkg -i  /home/{{ ansible_ssh_user }}/{{ postgres_pkg }};
+     apt-get -y -f install
+
+- name: response bootstrapping
+  template: src=genresponse.j2 dest=/home/{{ ansible_ssh_user }}/genresponse.sh
+
+- name: generate setup responses
+  shell: 
+     mkdir -p /opt/irods;
+     mv /home/{{ ansible_ssh_user }}/genresponse.sh /opt/irods/genresponse.sh;
+     chmod +x /opt/irods/genresponse.sh;
+     /opt/irods/genresponse.sh /opt/irods/setup_responses
+
+- name: Install python packages
+  shell: pip install -U pip jsonschema jinja2
+
+- name: irods setup requires FQDN
+  hostname: name={{ ansible_fqdn }}
+
+- name: config iCAT server
+  shell: /var/lib/irods/packaging/setup_irods.sh < /opt/irods/setup_responses
+
+- name: copy in DE core.re
+  sudo: yes
+  sudo_user: irods
+  copy: src=core.re dest=/etc/irods/ owner=irods group=irods mode=0644
+
+- name: copy in DE ipc-amqp.re
+  sudo: yes
+  sudo_user: irods
+  copy: src=ipc-amqp.re dest=/etc/irods/ owner=irods group=irods mode=0644
+
+- name: copy in DE ipc-custom.re
+  sudo: yes
+  sudo_user: irods
+  copy: src=ipc-custom.re dest=/etc/irods/ owner=irods group=irods mode=0644
+
+- name: copy in DE ipc-env.re
+  sudo: yes
+  sudo_user: irods
+  copy: src=ipc-env.re dest=/etc/irods/ owner=irods group=irods mode=0644
+
+- name: copy in DE ipc-json.re
+  sudo: yes
+  sudo_user: irods
+  copy: src=ipc-json.re dest=/etc/irods/ owner=irods group=irods mode=0644
+
+- name: copy in DE ipc-logic.re
+  copy: src=ipc-logic.re dest=/etc/irods/ owner=irods group=irods mode=0644
+
+- name: copy in DE ipc-uuid.re
+  copy: src=ipc-uuid.re dest=/etc/irods/ owner=irods group=irods mode=0644
+
