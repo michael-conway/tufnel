@@ -17,6 +17,17 @@
 - name: Create the hosts file for all machines
   template: src=hosts.j2 dest=/etc/hosts
 
+- name: Install SSH key
+  authorized_key:
+      user=vagrant
+      path=/home/vagrant/.ssh/authorized_keys
+      state=present
+      key="{{ lookup('file', 'id_rsa_virtualcluster.pub') }}"
+- name: Set hostname
+  command: hostname {{ irods_host }}
+  sudo: true
+
+
 #- name: copy private key
 #  copy: src=id_rsa dest=/home/{{ ansible_ssh_user }}/.ssh/id_rsa
 

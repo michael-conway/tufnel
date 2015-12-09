@@ -1,0 +1,27 @@
+----
+- hosts: all
+ sudo: true
+ vars:
+   # default vars file for postgresql
+     pg_version: 9.4
+     pg_encoding: 'UTF-8'
+     pg_locale: 'en_US.UTF-8'
+     pg_recreate_cluster: true
+     irods_root: /var/lib/irods/iRODS
+     irods_etc: /etc/irods
+     irods_host: irods1
+     irods_host_remote: irods2
+     irods_zone: zone1
+     irods_zone_remote: zone2
+     irods_zone_sid: zone1abcdefg
+     irods_zone_sid_remote: zone2abcdefg
+     irods_port: 1247
+     irods_port_remote: 1247
+     icat_host: localhost
+     icat_db: ICAT
+     rpm_dir: /vagrant/rpm
+
+ roles:
+   - role: common
+   - role: postgres
+   - role: irods
