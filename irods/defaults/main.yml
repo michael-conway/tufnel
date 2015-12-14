@@ -15,6 +15,7 @@ control_plane_key: temp_32_byte_key_for_agent__conn
 schema_uri: https://schemas.irods.org/configuration
 irods_port: 1247
 irods_admin: rods
+irods_passwd: test
 icat_db: icat
 # irods icat user
 icat_irods_user: irods

@@ -19,6 +19,8 @@
      irods_port_remote: 1247
      icat_host: localhost
      icat_db: ICAT
+     address: 192.168.50.12
+     host: irods2.irodsvagrant.org
      rpm_dir: /vagrant/rpm
 
  roles:
