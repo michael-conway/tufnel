@@ -21,15 +21,15 @@
 - name: Set hostname
   template: src=hostname.j2 dest=/etc/hostname
 
-- name: Install SSH key
-  authorized_key:
-      user=vagrant
-      path=/home/vagrant/.ssh/authorized_keys
-      state=present
-      key="{{ lookup('file', 'id_rsa_virtualcluster.pub') }}"
-- name: Set hostname
-  command: hostname {{ irods_host }}
-  sudo: true
+#- name: Install SSH key
+#  authorized_key:
+#      user=vagrant
+#      path=/home/vagrant/.ssh/authorized_keys
+#      state=present
+#      key="{{ lookup('file', 'id_rsa_virtualcluster.pub') }}"
+#- name: Set hostname
+#  command: hostname {{ irods_host }}
+#  sudo: true
 
 
 #- name: copy private key

@@ -5,7 +5,7 @@ RESPFILE=$1
 
 echo "{{ irods_service_acct_user }}" > $RESPFILE           # service account user ID
 echo "{{ irods_service_acct_user }}" >> $RESPFILE         # service account group ID
-echo "{{ irods_zone }}" >> $RESPFILE              # initial zone name
+echo "{{ zone }}" >> $RESPFILE              # initial zone name
 echo "{{ irods_port }}" >> $RESPFILE             # service port #
 echo "{{ port_range_begin }}" >> $RESPFILE      # transport starting port #
 echo "{{ port_range_end }}" >> $RESPFILE        # transport ending port #

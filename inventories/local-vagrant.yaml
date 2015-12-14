@@ -1,0 +1,14 @@
+[all]
+irods1.irodsvagrant.org address=192.168.50.11 zone=zone1 fedzone=zone2 host=irods1.irodsvagrant.org
+irods2.irodsvagrant.org address=192.168.50.12 zone=zone2 fedzone=zone1 host=irods2.irodsvagrant.org
+
+
+[irods1]
+irods1.irodsvagrant.org
+
+[irods2]
+irods2.irodsvagrant.org
+
+[irods]
+irods1.irodsvagrant.org
+irods2.irodsvagrant.org
