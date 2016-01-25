@@ -22,3 +22,6 @@ icat_irods_user: irods
 # irods icat pass
 icat_irods_password: irods
 icat_port: 5432
+pam_user: pam
+pam_password: pam
+irods_default_resource: test1-resc

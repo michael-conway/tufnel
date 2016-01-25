@@ -58,3 +58,37 @@
 - name: config iCAT server
   shell: /var/lib/irods/packaging/setup_irods.sh < /opt/irods/setup_responses
 
+- name: make ssl dir
+  file: path=/var/lib/irods/iRODS/server/config/certs owner=irods group=irods mode=0644 state=directory
+
+- name: copy over ssl cert
+  copy: src=server.crt dest=/var/lib/irods/iRODS/server/config/certs/server.crt owner=irods group=irods mode=0644
+
+- name: copy over ssl private key
+  copy: src=server.key dest=/var/lib/irods/iRODS/server/config/certs/server.key owner=irods group=irods mode=0644
+
+- name: copy over dhparams
+  copy: src=dhparams.pem dest=/var/lib/irods/iRODS/server/config/certs/dhparams.pem owner=irods group=irods mode=0644
+
+- name: configure irods server config
+  sudo: yes
+  template:
+    src: server_config.json
+    dest: /etc/irods/server_config.json
+
+- name: configure irods environment
+  sudo: yes
+  template:
+    src: irods_environment.json
+    dest: /var/lib/irods/.irods/irods_environment.json
+
+- name: copy enable pam for irods
+  sudo: yes
+  copy: src=irods dest=/etc/pam.d/irods owner=root group=root mode=0644
+
+- name: Creating pam user "{{ pam_user }}" without admin access
+  user: name={{ pam_user}} password={{ pam_user |password_hash('sha512') }}
+
+- name: copy over core re with test instrumentation
+  copy: src=core.re dest=/etc/irods/core.re owner=irods group=irods mode=0644
+
