@@ -28,4 +28,5 @@
     - role: common
     - role: postgres
     - role: irods
+    - role: jargontest
 
