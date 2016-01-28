@@ -7,3 +7,65 @@
      iadmin mkuser test1 rodsadmin
      iadmin moduser test1 password test
      iadmin aua test1 test1DN
+
+
+- name: add test2 user
+  sudo: yes
+  sudo_user: irods
+  ignore_errors: yes
+  shell:
+     iadmin mkuser test2 rodsuser
+     iadmin moduser test2 password test
+
+
+- name: add test3 user
+  sudo: yes
+  sudo_user: irods
+  ignore_errors: yes
+  shell:
+     iadmin mkuser test3 rodsuser
+     iadmin moduser test3 password test
+
+
+- name: add resc1
+  sudo: yes
+  sudo_user: irods
+  ignore_errors: yes
+  shell:
+   iadmin mkresc test1-resc "unix file system"  {{host}}:/var/lib/irods/iRODS/Vault1
+
+
+- name: add resc2
+  sudo: yes
+  sudo_user: irods
+  ignore_errors: yes
+  shell:
+   iadmin mkresc test2-resc "unix file system"  {{host}}:/var/lib/irods/iRODS/Vault2
+
+
+- name: add resc3
+  sudo: yes
+  sudo_user: irods
+  ignore_errors: yes
+  shell:
+   iadmin mkresc test3-resc "unix file system"  {{host}}:/var/lib/irods/iRODS/Vault3
+
+
+
+- name: add anonymous
+  sudo: yes
+  sudo_user: irods
+  ignore_errors: yes
+  shell:
+    iadmin mkuser anonymous rodsuser
+    iadmin atg public anonymous
+
+
+- name: make up groups
+  sudo: yes
+  sudo_user: irods
+  ignore_errors: yes
+  shell:
+    iadmin mkgroup jargonTestUg
+    iadmin atg jargonTestUg test1
+    iadmin atg jargonTestUg test3
